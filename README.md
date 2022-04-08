@@ -27,5 +27,5 @@ EXTRAS:
 1. Open terminal window
 2. Run `npm run build`
 3. Run `npm run dev`
-4. Go to http://localhost:3000
+4. Go to http://localhost:1234
 
