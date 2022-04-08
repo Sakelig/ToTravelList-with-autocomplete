@@ -264,3 +264,11 @@ input[type='checkbox'] {
     right: 0;
     left: 0;
 }
+.suggestion{
+    cursor: pointer;
+    border-bottom: 1px solid black;
+}
+
+.suggestion:hover{
+    background-color: gray;
+}
