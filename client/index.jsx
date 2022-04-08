@@ -85,10 +85,29 @@ function TravelList() {
     }
 
     function onDeleteHandler(e) {
+
         // Remove object from addedCountries array
         const country = e.target.parentNode.parentNode.firstChild.innerText
+        console.log(country)
+
         const newAddedCountries = addedCountries.filter(addedCountry => addedCountry.country !== country)
         setAddedCountries(newAddedCountries)
+    }
+
+    function onToggleHandler(e) {
+
+        // Toggle completed property of object in addedCountries array  and update the DOM
+        const country = e.target.parentNode.parentNode.firstChild.innerText
+        console.log(country)
+
+        const newAddedCountries = addedCountries.map(addedCountry => {
+            if (addedCountry.country === country) {
+                addedCountry.completed = !addedCountry.completed
+            }
+            return addedCountry
+        })
+        setAddedCountries(newAddedCountries)
+
     }
 
     function onSubmitHandler(e) {
@@ -112,6 +131,7 @@ function TravelList() {
         }
     }
 
+
     return <div>
         <section id="todoapp">
             <header id="header">
@@ -123,8 +143,7 @@ function TravelList() {
                            setTimeout(() => {
                                setSuggestions([])
                            }, 100)
-                       }
-                       }
+                       }}
                        onKeyPress={(e) => {onSubmitHandler(e)}}
 
                        />
@@ -138,7 +157,7 @@ function TravelList() {
                 <ul id="todo-list">
                     {addedCountries.map((country) => (
                         <li key={country.country}>
-                            <CountryCard country={country.country} completed={country.completed} handleDelete={(e) => onDeleteHandler(e)} />
+                            <CountryCard country={country.country} completed={country.completed} handleDelete={(e) => onDeleteHandler(e)} handleToggle={(e) => onToggleHandler(e)}/>
                         </li>
                     ))}
                 </ul>
