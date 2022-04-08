@@ -5,14 +5,12 @@ import {useLoading} from "./useLoading";
 import {fetchJSON} from "./fetchJSON";
 
 
-function CountryCard({country, completed}) {
-
-
+function CountryCard({country, completed, handleDelete, handleToggle}) {
 
     return <div className="view">
-        {completed ? <button className="complete yes"/> : <button className="complete no"/>}
+        {completed ? <button onClick={handleToggle} className="complete yes"/> : <button onClick={handleToggle} className="complete no"/>}
         <label>{country}</label>
-        <button className="destroy" onClick={() => country}/>
+        <button className="destroy" onClick={handleDelete}/>
     </div>;
 }
 
@@ -74,7 +72,7 @@ function TravelList() {
             })
         }
 
-        // Check if the country is already added to addedCountries
+        // Check if the country is already added to addedCountries array
         if (matches.length > 0) {
             matches = matches.filter(country => {
                 return !addedCountries.some(addedCountry => addedCountry.country === country.name)
@@ -84,6 +82,34 @@ function TravelList() {
         console.log("matches", matches)
         setSuggestions(matches)
         setInput(text)
+    }
+
+    function onDeleteHandler(e) {
+        // Remove object from addedCountries array
+        const country = e.target.parentNode.parentNode.firstChild.innerText
+        const newAddedCountries = addedCountries.filter(addedCountry => addedCountry.country !== country)
+        setAddedCountries(newAddedCountries)
+    }
+
+    function onSubmitHandler(e) {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            console.log(e.target.value)
+
+            // Check if country is already added to addedCountries and is legit
+            let country = addedCountries.find(country => country.country.toLowerCase() === e.target.value.toLowerCase())
+            if (country) {
+                alert(country.country+ ' is already added')
+            } else if (data.some(country => country.name === e.target.value)) {
+                setAddedCountries([...addedCountries, {country: e.target.value, completed: false}])
+            } else {
+                alert(e.target.value + ' is not a valid country')
+            }
+
+
+            console.log(country)
+            setInput("")
+        }
     }
 
     return <div>
@@ -99,22 +125,9 @@ function TravelList() {
                            }, 100)
                        }
                        }
-                       onKeyPress={(e) => {
-                           if (e.key === "Enter") {
-                               e.preventDefault()
-                               console.log(e.target.value)
-                               // check if  country is already added to addedCountries
-                               let country = addedCountries.find(country => country.country.toLowerCase() === e.target.value.toLowerCase())
-                               if (country) {
-                                   alert(country.country+ ' is already added')
-                               } else {
-                                   setAddedCountries([...addedCountries, {country: e.target.value, completed: false}])
-                               }
-                               console.log(country)
-                               setInput("")
-                           }
-                       }
-                       }/>
+                       onKeyPress={(e) => {onSubmitHandler(e)}}
+
+                       />
                 {suggestions && suggestions.map((suggestions, i) =>
                     <div key={i} onClick={() => onSuggestHandler(suggestions.name)}>
                         <span className="suggestion">{suggestions.name}</span>
@@ -125,7 +138,7 @@ function TravelList() {
                 <ul id="todo-list">
                     {addedCountries.map((country) => (
                         <li key={country.country}>
-                            <CountryCard country={country.country} completed={country.completed} />
+                            <CountryCard country={country.country} completed={country.completed} handleDelete={(e) => onDeleteHandler(e)} />
                         </li>
                     ))}
                 </ul>
@@ -135,7 +148,6 @@ function TravelList() {
 }
 
 function Application() {
-
 
   return (
     <BrowserRouter>
