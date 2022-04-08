@@ -29,6 +29,3 @@ EXTRAS:
 3. Run `npm run dev`
 4. Go to http://localhost:3000
 
-
-### note:
-  - Made backend server serve the frontend because i planned on implementing cookies, but decided not to solve a frontend task with backend
