@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLoading} from "./useLoading";
 import {fetchJSON} from "./fetchJSON";
 import {CountryCard} from "./countryCard";
@@ -7,30 +7,17 @@ export function TravelList() {
 
     const [input, setInput] = useState("")
     const [suggestions, setSuggestions] = useState([])
-    const [addedCountries, setAddedCountries] = useState([
-        {
-            country: "Norway",
-            completed: true
-        },
-        {
-            country: "Sweden",
-            completed: true
-        },
-        {
-            country: "Argentina",
-            completed: false
-        },
-        {
-            country: "Mexico",
-            completed: false
-        }
-    ])
+    const [addedCountries, setAddedCountries] = useState(JSON.parse(localStorage.getItem('list')) || [])
+
+    useEffect(() => {
+        localStorage.setItem('list', JSON.stringify(addedCountries))
+    }, [addedCountries])
+
 
 
     const {loading, error, data} = useLoading(async () =>
         fetchJSON("https://restcountries.com/v2/all")
     );
-
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -42,6 +29,7 @@ export function TravelList() {
             </div>
         );
     }
+
 
     function onSuggestHandler(suggestion) {
         setInput(suggestion)
@@ -110,6 +98,7 @@ export function TravelList() {
                     country: e.target.value,
                     completed: false
                 }])
+                localStorage.setItem('list', JSON.stringify(addedCountries))
             } else {
                 alert(e.target.value + ' is not a valid country')
             }
@@ -119,6 +108,7 @@ export function TravelList() {
             setInput("")
         }
     }
+
 
 
     return <div>
