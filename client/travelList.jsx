@@ -7,7 +7,16 @@ export function TravelList() {
 
     const [input, setInput] = useState("")
     const [suggestions, setSuggestions] = useState([])
-    const [addedCountries, setAddedCountries] = useState(JSON.parse(localStorage.getItem('list')) || [])
+    const [addedCountries, setAddedCountries] = useState(JSON.parse(localStorage.getItem('list')) || [
+        {
+            country: "Norway",
+            completed: true
+        },
+        {
+            country: "Mexico",
+            completed: false
+        }
+    ])
 
     useEffect(() => {
         localStorage.setItem('list', JSON.stringify(addedCountries))
