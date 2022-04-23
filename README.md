@@ -1,8 +1,5 @@
 # tech_assignment
 
-Task document:
-https://docs.google.com/document/d/15lnO-WkQ8FV9VKAKCBk96mwDra0fR-w0kRHNW1E2XE0/edit?usp=sharing
-
 # Task:
 Create a TODO-list app for keeping track of countries you want to travel to. 
 
